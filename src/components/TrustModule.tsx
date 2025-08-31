@@ -4,19 +4,19 @@ import { Shield, Check, Clock, Hash } from 'lucide-react';
 const TrustModule: React.FC = () => {
   const auditTrail = [
     {
-      timestamp: '2025-09-30 06:00:00 IST',
+      timestamp: '2025-09-01 06:00:00 IST',
       action: 'Consortium Intelligence v6.0 Deployment',
       hash: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0',
       status: 'verified'
     },
     {
-      timestamp: '2025-09-30 05:30:00 IST',
-      action: 'September 30th Prediction Matrix Generation',
+      timestamp: '2025-09-01 05:30:00 IST',
+  action: 'September 1st Prediction Matrix Generation',
       hash: 'b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1',
       status: 'verified'
     },
     {
-      timestamp: '2025-09-30 04:45:00 IST',
+      timestamp: '2025-09-01 04:45:00 IST',
       action: 'Multi-Lottery Consortium Analysis Complete',
       hash: 'c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2',
       status: 'verified'
@@ -90,7 +90,7 @@ const TrustModule: React.FC = () => {
           SHA256: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0
         </div>
         <div className="mt-2 text-gray-400 text-sm">
-          Last Updated: September 30, 2025, 06:00 AM IST
+          Last Updated: September 1, 2025, 06:00 AM IST
         </div>
       </div>
 

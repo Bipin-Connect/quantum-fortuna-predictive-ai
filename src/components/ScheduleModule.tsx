@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Calendar, AlertCircle } from 'lucide-react';
+import { Clock, Calendar, AlertCircle, FileText, Database } from 'lucide-react';
 
 const ScheduleModule: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showRegistry, setShowRegistry] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -12,52 +13,53 @@ const ScheduleModule: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Complete draw schedule registry
   const draws = [
     {
       name: 'Emirates Draw MEGA7',
-      nextDraw: new Date('2025-09-30T20:00:00'),
+      nextDraw: new Date('2025-09-01T20:00:00'),
       frequency: 'Weekly',
       status: 'upcoming'
     },
     {
       name: 'Emirates Draw EASY6',
-      nextDraw: new Date('2025-09-30T19:30:00'),
+      nextDraw: new Date('2025-09-01T19:30:00'),
       frequency: 'Bi-weekly',
       status: 'upcoming'
     },
     {
       name: 'Emirates Draw FAST5',
-      nextDraw: new Date('2025-09-30T18:00:00'),
+      nextDraw: new Date('2025-09-01T18:00:00'),
       frequency: 'Daily',
       status: 'active'
     },
     {
       name: 'Omillionaire',
-      nextDraw: new Date('2025-09-30T21:00:00'),
+      nextDraw: new Date('2025-09-01T21:00:00'),
       frequency: 'Weekly',
       status: 'upcoming'
     },
     {
       name: 'Lotto India',
-      nextDraw: new Date('2025-09-30T21:00:00'),
+      nextDraw: new Date('2025-09-01T21:00:00'),
       frequency: 'Daily',
       status: 'active'
     },
     {
       name: 'EuroMillions',
-      nextDraw: new Date('2025-09-30T21:00:00'),
+      nextDraw: new Date('2025-09-01T21:00:00'),
       frequency: 'Bi-weekly',
       status: 'upcoming'
     },
     {
       name: 'Lottery.co.uk Free',
-      nextDraw: new Date('2025-09-30T12:00:00'),
+      nextDraw: new Date('2025-09-01T12:00:00'),
       frequency: 'Daily',
       status: 'active'
     },
     {
       name: 'Powerball USA',
-      nextDraw: new Date('2025-09-30T23:00:00'),
+      nextDraw: new Date('2025-09-01T23:00:00'),
       frequency: 'Bi-weekly',
       status: 'upcoming'
     }
@@ -98,89 +100,110 @@ const ScheduleModule: React.FC = () => {
     return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
   };
 
-  return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-8">
-        <Clock className="w-16 h-16 text-green-400 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-white mb-2">Draw Schedule</h1>
-        <p className="text-gray-300">Live countdown timers for upcoming lottery draws</p>
-      </div>
+  const toggleRegistry = () => {
+    setShowRegistry(!showRegistry);
+  };
 
-      <div className="mb-6 bg-white/10 backdrop-blur-lg rounded-2xl p-4 border border-white/20">
-        <div className="flex items-center justify-center space-x-4">
-          <Calendar className="w-6 h-6 text-cyan-400" />
-          <span className="text-lg font-medium text-white">
-            Current Time: {currentTime.toLocaleString('en-US', {
-              timeZone: 'Asia/Kolkata',
-              dateStyle: 'medium',
-              timeStyle: 'medium'
-            })} IST
-          </span>
+  return (
+    <div className="max-w-6xl mx-auto">
+      <div className="text-center mb-8">
+        <Clock className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+        <h1 className="text-3xl font-bold text-white mb-2">Draw Schedule</h1>
+        <p className="text-gray-300">Real-time countdown timers with complete draw schedule registry</p>
+        
+        <div className="mt-4 flex justify-center space-x-4">
+          <button 
+            onClick={toggleRegistry}
+            className="flex items-center px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg border border-blue-500/30 transition-all"
+          >
+            <FileText className="w-4 h-4 mr-2" />
+            {showRegistry ? 'Hide Complete Registry' : 'Show Complete Registry'}
+          </button>
         </div>
       </div>
+      
+      {showRegistry && (
+        <div className="mb-8 bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700">
+          <div className="flex items-center mb-4">
+            <Database className="w-5 h-5 text-blue-400 mr-2" />
+            <h2 className="text-xl font-semibold text-white">Complete Draw Schedule Registry</h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left text-gray-300">
+              <thead className="text-xs uppercase bg-gray-800/70 text-gray-400">
+                <tr>
+                  <th className="px-4 py-3">Lottery</th>
+                  <th className="px-4 py-3">Frequency</th>
+                  <th className="px-4 py-3">Draw Days</th>
+                  <th className="px-4 py-3">Draw Time (UTC)</th>
+                  <th className="px-4 py-3">Next Draw</th>
+                  <th className="px-4 py-3">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {draws.map((draw, index) => {
+                  const { expired } = getTimeRemaining(draw.nextDraw);
+                  return (
+                    <tr key={index} className="border-b border-gray-700/50 hover:bg-gray-700/20">
+                      <td className="px-4 py-3 font-medium">{draw.name}</td>
+                      <td className="px-4 py-3">{draw.frequency}</td>
+                      <td className="px-4 py-3">{draw.frequency === 'Weekly' ? 'Monday' : draw.frequency === 'Bi-weekly' ? 'Monday, Thursday' : 'Every day'}</td>
+                      <td className="px-4 py-3">{draw.nextDraw.toTimeString().substring(0, 5)}</td>
+                      <td className="px-4 py-3">{draw.nextDraw.toLocaleDateString()}</td>
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(draw.status, expired)}`}>
+                          {expired ? 'Completed' : draw.status === 'active' ? 'Active' : 'Upcoming'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {draws.map((draw, index) => {
-          const timeRemaining = getTimeRemaining(draw.nextDraw);
-          
+          const { expired, timeString } = getTimeRemaining(draw.nextDraw);
           return (
-            <div
-              key={index}
-              className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:border-cyan-400/50 transition-all duration-300"
-            >
-              <div className="flex items-center justify-between mb-4">
+            <div key={index} className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-blue-500/30 transition-all">
+              <div className="flex justify-between items-start mb-4">
                 <h3 className="text-xl font-semibold text-white">{draw.name}</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusBadge(draw.status, timeRemaining.expired)}`}>
-                  {timeRemaining.expired ? 'Completed' : draw.status.charAt(0).toUpperCase() + draw.status.slice(1)}
+                <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(draw.status, expired)}`}>
+                  {expired ? 'Completed' : draw.status === 'active' ? 'Active' : 'Upcoming'}
                 </span>
               </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Next Draw:</span>
-                  <span className="text-white">
-                    {draw.nextDraw.toLocaleString('en-US', {
-                      timeZone: 'Asia/Kolkata',
-                      dateStyle: 'short',
-                      timeStyle: 'short'
-                    })} IST
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Frequency:</span>
-                  <span className="text-white">{draw.frequency}</span>
-                </div>
-
-                <div className="bg-black/30 rounded-lg p-4 text-center border border-gray-600">
-                  <div className={`text-2xl font-mono font-bold mb-2 ${getStatusColor(draw.status, timeRemaining.expired)}`}>
-                    {timeRemaining.timeString}
-                  </div>
-                  {!timeRemaining.expired && (
-                    <div className="text-sm text-gray-400">Time Remaining</div>
-                  )}
-                </div>
-
-                {timeRemaining.expired && (
-                  <div className="flex items-center justify-center space-x-2 text-orange-400">
-                    <AlertCircle size={16} />
-                    <span className="text-sm">Results processing...</span>
-                  </div>
-                )}
+              
+              <div className="flex items-center mb-4">
+                <Calendar className="w-4 h-4 mr-2 text-blue-400" />
+                <span className="text-gray-300">{draw.nextDraw.toLocaleDateString()}</span>
               </div>
+              
+              <div className="flex items-center mb-6">
+                <Clock className="w-4 h-4 mr-2 text-blue-400" />
+                <span className="text-gray-300">{draw.nextDraw.toTimeString().substring(0, 5)} UTC</span>
+              </div>
+              
+              <div className="bg-gray-900/50 rounded-lg p-4 text-center">
+                <p className="text-sm text-gray-400 mb-1">Time Remaining</p>
+                <p className={`text-2xl font-bold ${getStatusColor(draw.status, expired)}`}>
+                  {timeString}
+                </p>
+              </div>
+              
+              {expired && (
+                <div className="mt-4 bg-red-500/10 rounded-lg p-3 border border-red-500/20">
+                  <div className="flex items-center">
+                    <AlertCircle className="w-4 h-4 text-red-400 mr-2" />
+                    <p className="text-sm text-red-400">Draw completed. Results available in Analysis.</p>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
-      </div>
-
-      <div className="mt-8 bg-blue-600/20 backdrop-blur-lg rounded-2xl p-6 border border-blue-400/30">
-        <h3 className="text-lg font-semibold text-white mb-2">Schedule Notes</h3>
-        <ul className="text-gray-300 space-y-1 text-sm">
-          <li>• All times are displayed in Indian Standard Time (IST)</li>
-          <li>• Countdown timers update every second for accuracy</li>
-          <li>• Post-draw analysis begins immediately after completion</li>
-          <li>• Prediction models are updated within 30 minutes of results</li>
-        </ul>
       </div>
     </div>
   );

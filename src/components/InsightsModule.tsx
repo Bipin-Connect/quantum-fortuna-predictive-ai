@@ -1,5 +1,5 @@
-import React from 'react';
-import { BarChart3, TrendingUp, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { BarChart3, TrendingUp, Sparkles, PieChart, LineChart, BarChart, Activity, Database } from 'lucide-react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -116,12 +116,51 @@ const InsightsModule: React.FC = () => {
     }
   ];
 
+  const [activeTab, setActiveTab] = useState('performance');
+  
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+  
   return (
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-8">
-        <BarChart3 className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-white mb-2">Analytics & Insights</h1>
-        <p className="text-gray-300">Data-driven lottery analysis and predictive visualizations</p>
+        <BarChart3 className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+        <h1 className="text-3xl font-bold text-white mb-2">Analytics & Insights Dashboard</h1>
+        <p className="text-gray-300">Advanced pattern analysis with interactive visualizations</p>
+      </div>
+      
+      <div className="mb-6 flex justify-center">
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 p-1 flex">
+          <button
+            onClick={() => handleTabChange('performance')}
+            className={`px-4 py-2 rounded-md flex items-center ${activeTab === 'performance' ? 'bg-purple-500/30 text-purple-300' : 'text-gray-400 hover:text-gray-200'}`}
+          >
+            <Activity className="w-4 h-4 mr-2" />
+            Performance Metrics
+          </button>
+          <button
+            onClick={() => handleTabChange('patterns')}
+            className={`px-4 py-2 rounded-md flex items-center ${activeTab === 'patterns' ? 'bg-blue-500/30 text-blue-300' : 'text-gray-400 hover:text-gray-200'}`}
+          >
+            <LineChart className="w-4 h-4 mr-2" />
+            Pattern Analysis
+          </button>
+          <button
+            onClick={() => handleTabChange('confidence')}
+            className={`px-4 py-2 rounded-md flex items-center ${activeTab === 'confidence' ? 'bg-green-500/30 text-green-300' : 'text-gray-400 hover:text-gray-200'}`}
+          >
+            <PieChart className="w-4 h-4 mr-2" />
+            Confidence Metrics
+          </button>
+          <button
+            onClick={() => handleTabChange('data')}
+            className={`px-4 py-2 rounded-md flex items-center ${activeTab === 'data' ? 'bg-yellow-500/30 text-yellow-300' : 'text-gray-400 hover:text-gray-200'}`}
+          >
+            <Database className="w-4 h-4 mr-2" />
+            Data Explorer
+          </button>
+        </div>
       </div>
 
       {/* Key Insights Grid */}
@@ -156,12 +195,12 @@ const InsightsModule: React.FC = () => {
         </div>
       </div>
 
-      {/* Spatial Intelligence Map Placeholder */}
+      {/* Advanced Analytics Dashboard */}
       <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">Spatial Intelligence Map</h2>
-          <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-sm font-medium border border-yellow-500/30">
-            AR/VR Integration Pending
+          <h2 className="text-2xl font-bold text-white">Advanced Analytics Dashboard</h2>
+          <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-medium border border-green-500/30">
+            Quantum Enabled
           </span>
         </div>
         

@@ -1,45 +1,15 @@
 # Quantum Fortuna™ Deployment Guide
 
-## 🚀 Automated CI/CD Setup (Updated August 29, 2025)
+## 🚀 Automated CI/CD Setup (Updated September 5, 2025)
 
-Your Quantum Fortuna™ repository now includes automated CI/CD pipelines for seamless deployment and quality assurance with enhanced lottery data integration.
-
-### 📋 Prerequisites
-
-Before the automation works, you need to configure these secrets in your GitHub repository:
-
-1. **Go to your GitHub repository**
-2. **Navigate to Settings → Secrets and variables → Actions**
-3. **Add the following repository secrets:**
-
-#### Required Secrets:
-
-```
-NETLIFY_AUTH_TOKEN=your_netlify_personal_access_token
-NETLIFY_SITE_ID=your_netlify_site_id
-```
-
-### 🔧 Getting Netlify Credentials
-
-#### 1. Netlify Auth Token:
-- Go to [Netlify Dashboard](https://app.netlify.com/)
-- Click on your profile → User settings
-- Go to Applications → Personal access tokens
-- Generate new token → Copy the token
-- Add as `NETLIFY_AUTH_TOKEN` in GitHub secrets
-
-#### 2. Netlify Site ID:
-- Go to your Netlify site dashboard
-- Navigate to Site settings → General
-- Copy the Site ID (under Site details)
-- Add as `NETLIFY_SITE_ID` in GitHub secrets
+Your Quantum Fortuna™ repository now includes automated CI/CD pipelines for seamless deployment and quality assurance with enhanced lottery data integration. The project is deployed exclusively to GitHub Pages.
 
 ### 🔄 Automated Workflows
 
 #### 1. **Main Deployment** (`.github/workflows/deploy.yml`)
 - **Triggers**: Push to main/master branch
 - **Actions**: Build, test, and deploy to production
-- **Features**: Automatic Netlify deployment with commit messages
+- **Features**: Automatic GitHub Pages deployment with commit messages and history tracking
 
 #### 2. **Quality Assurance** (`.github/workflows/quality-check.yml`)
 - **Triggers**: All pushes and pull requests

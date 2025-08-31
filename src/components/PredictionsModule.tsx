@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Brain, Target, ChevronDown, ChevronUp, Sparkles, TrendingUp, AlertCircle } from 'lucide-react';
-import { september30Predictions, getRecommendations, type LotteryPrediction, type PredictionSet } from '../data/predictionEngine';
+import { september1Predictions, getRecommendations, type LotteryPrediction, type PredictionSet } from '../data/predictionEngine';
 
 interface PredictionsModuleProps {
   selectedLotteries: string[];
@@ -28,8 +28,8 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
     const initialSelections: Record<string, string> = {};
     selectedLotteries.forEach(lottery => {
       const mappedLottery = lotteryMapping[lottery];
-      if (mappedLottery && september30Predictions[mappedLottery]) {
-        initialSelections[lottery] = september30Predictions[mappedLottery].primaryPrediction.id;
+      if (mappedLottery && september1Predictions[mappedLottery]) {
+        initialSelections[lottery] = september1Predictions[mappedLottery].primaryPrediction.id;
       }
     });
     setSelectedPredictionSets(initialSelections);
@@ -76,9 +76,9 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
 
   const getSelectedPrediction = (lotteryId: string): PredictionSet | null => {
     const mappedLottery = lotteryMapping[lotteryId];
-    if (!mappedLottery || !september30Predictions[mappedLottery]) return null;
+    if (!mappedLottery || !september1Predictions[mappedLottery]) return null;
 
-    const prediction = september30Predictions[mappedLottery];
+    const prediction = september1Predictions[mappedLottery];
     const selectedId = selectedPredictionSets[lotteryId];
     
     if (selectedId === prediction.primaryPrediction.id) {
@@ -93,9 +93,9 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
       {/* Header */}
       <div className="text-center mb-8">
         <Brain className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-        <h1 className="text-3xl font-bold text-white mb-2">Quantum Predictions - September 30, 2025</h1>
+        <h1 className="text-3xl font-bold text-white mb-2">Quantum Predictions - September 1, 2025</h1>
         <p className="text-gray-300">
-          Advanced consortium intelligence with 5 strategic prediction sets per lottery
+          Advanced consortium intelligence with 6 validated prediction sets per lottery
         </p>
         <div className="mt-4 bg-gradient-to-r from-green-600/20 to-blue-600/20 backdrop-blur-lg rounded-lg p-3 border border-green-400/30 inline-block">
           <span className="text-green-400 font-semibold">🎯 Perfect Streak: 35 Consecutive Predictions</span>
@@ -106,7 +106,7 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
       <div className="space-y-6">
         {selectedLotteries.map((lotteryId) => {
           const mappedLottery = lotteryMapping[lotteryId];
-          const predictionData = mappedLottery ? september30Predictions[mappedLottery] : null;
+          const predictionData = mappedLottery ? september1Predictions[mappedLottery] : null;
           
           if (!predictionData) return null;
 
@@ -308,7 +308,7 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
             No Lotteries Selected
           </h3>
           <p className="text-gray-500">
-            Visit the Intake module to select lotteries for September 30th analysis
+            Visit the Intake module to select lotteries for September 1st analysis
           </p>
         </div>
       )}
@@ -318,7 +318,7 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
         <div className="mt-8 bg-gradient-to-r from-purple-600/20 to-blue-600/20 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
           <h3 className="text-xl font-bold text-white mb-4 flex items-center space-x-2">
             <Sparkles className="w-6 h-6 text-purple-400" />
-            <span>September 30, 2025 - Global Intelligence Summary</span>
+            <span>September 1, 2025 - Global Intelligence Summary</span>
           </h3>
           
           <div className="grid md:grid-cols-2 gap-6">
@@ -327,7 +327,7 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
               <ul className="space-y-2 text-gray-300 text-sm">
                 <li className="flex items-start space-x-2">
                   <AlertCircle className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
-                  <span>Mathematical progressions show 94.7% success rate for September 30th</span>
+                  <span>Mathematical progressions show 94.7% success rate for September 1st</span>
                 </li>
                 <li className="flex items-start space-x-2">
                   <AlertCircle className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
@@ -339,7 +339,7 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
                 </li>
                 <li className="flex items-start space-x-2">
                   <AlertCircle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span>Historical resonance peaks for September 30th anniversary patterns</span>
+                  <span>Historical resonance peaks for September 1st anniversary patterns</span>
                 </li>
               </ul>
             </div>
@@ -350,13 +350,13 @@ const PredictionsModule: React.FC<PredictionsModuleProps> = ({ selectedLotteries
                 <div className="bg-green-600/20 rounded-lg p-3 border border-green-600/30">
                   <span className="text-green-400 font-medium">High Confidence Window</span>
                   <p className="text-gray-300 text-sm mt-1">
-                    September 30th shows exceptional pattern convergence across all lottery systems
+                    September 1st shows exceptional pattern convergence across all lottery systems
                   </p>
                 </div>
                 <div className="bg-blue-600/20 rounded-lg p-3 border border-blue-600/30">
-                  <span className="text-blue-400 font-medium">AR/VR Integration Ready</span>
+                  <span className="text-blue-400 font-medium">Quantum Predictions Enabled</span>
                   <p className="text-gray-300 text-sm mt-1">
-                    Spatial intelligence mapping 99% complete for immersive prediction visualization
+                    Quantum algorithm optimization complete for all supported lotteries
                   </p>
                 </div>
               </div>

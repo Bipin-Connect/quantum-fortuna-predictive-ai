@@ -3,26 +3,31 @@
   "version": "5.3.0",
   "private": true,
   "type": "module",
-  "description": "Quantum Fortuna™ v5.3.0 — Predictive AI dashboard with automated CI/CD deployment, audit-grade traceability, global lottery analytics, and AR/VR readiness.",
+  "description": "Quantum Fortuna™ v5.3.0 — Predictive AI dashboard with automated CI/CD deployment, audit-grade traceability, global lottery analytics, and AR/VR readiness. Includes Jest testing framework and GitHub Pages deployment.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview", 
-    "preview:local": "vite build --base=/ && serve -s dist",
-    "deploy": "npm run build && echo 'Build complete - ready for GitHub Pages deployment'"
+    "preview": "vite preview",
+    "deploy": "npm run build && echo 'Build complete - ready for GitHub Pages deployment'",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "chart.js": "^4.5.0",
-    "lucide-react": "^0.344.0",
-    "marked": "^16.2.0",
+    "lucide-react": "^0.294.0",
+    "marked": "^9.1.6",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -31,11 +36,15 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^15.9.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.1.1",
+    "jest-environment-jsdom": "^30.1.1",
     "postcss": "^8.4.35",
+    "serve": "^14.2.1",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.4.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
-    "vite": "^7.1.3",
-    "serve": "^14.2.1"
+    "vite": "^4.5.2"
   }
 }

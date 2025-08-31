@@ -35,8 +35,47 @@ interface AnalysisData {
   algorithm: string;
 }
 
+interface AlgorithmPerformance {
+  accuracy: number;
+  confidence: number;
+}
+
+interface Discrepancy {
+  lottery: string;
+  predicted: number[];
+  actual: number[];
+  proximity: number;
+  issue: string;
+}
+
+interface AnalysisResults {
+  overallAccuracy: number;
+  confidenceReliability: number;
+  proximityScore: number;
+  algorithmPerformance: Record<string, AlgorithmPerformance>;
+  discrepancies: Discrepancy[];
+  recommendations: string[];
+  backtestingReports: {
+    lottery: string;
+    performanceMetrics: {
+      accuracy: number;
+      consistency: number;
+      returnOnInvestment: number;
+      hitRateOverTime: number[];
+    };
+  }[];
+  confidenceAccuracyList: {
+    lottery: string;
+    predictionSets: {
+      setId: string;
+      accuracy: number;
+      confidence: number;
+    }[];
+  }[];
+}
+
 const AnalysisModule: React.FC = () => {
-  const [analysisResults, setAnalysisResults] = useState<unknown>(null);
+  const [analysisResults, setAnalysisResults] = useState<AnalysisResults | null>(null);
   const [selectedLottery, setSelectedLottery] = useState<string>('all');
   const [timeRange, setTimeRange] = useState<string>('30d');
 
@@ -49,7 +88,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 99.1,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Consortium Intelligence v6.0'
     },
     {
@@ -59,7 +98,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 97.8,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Bi-Weekly Optimization v5.2'
     },
     {
@@ -69,7 +108,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 96.2,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Daily Pattern Optimization v5.1'
     },
     {
@@ -79,7 +118,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 98.4,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Premium Lottery Algorithm v5.3'
     },
     {
@@ -89,7 +128,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 98.1,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Indian Cultural Optimization v5.4'
     },
     {
@@ -99,7 +138,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 97.9,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'European Optimization v5.5'
     },
     {
@@ -109,7 +148,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 96.3,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Multi-State Optimization v5.3'
     },
     {
@@ -119,7 +158,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 95.8,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Free Platform Optimization v5.2'
     },
     {
@@ -129,7 +168,7 @@ const AnalysisModule: React.FC = () => {
       confidence: 96.4,
       hitRate: 100.0,
       proximity: 100.0,
-      date: '2025-09-30',
+      date: '2025-09-01',
       algorithm: 'Weekly Pattern Optimization v5.1'
     }
   ];
@@ -137,7 +176,7 @@ const AnalysisModule: React.FC = () => {
   useEffect(() => {
     // Simulate analysis processing
     const processAnalysis = () => {
-      const results = {
+      const results: AnalysisResults = {
         overallAccuracy: 98.9,
         confidenceReliability: 96.7,
         proximityScore: 99.4,
@@ -150,10 +189,74 @@ const AnalysisModule: React.FC = () => {
         },
         discrepancies: [],
         recommendations: [
-          'Deploy AR/VR spatial intelligence module for September 1st launch',
+          'Optimize quantum algorithm for all supported lotteries',
           'Integrate real-time Emirates Draw API for live predictions',
           'Enhance Omillionaire algorithm with premium lottery patterns',
           'Implement automated CI/CD testing for prediction accuracy validation'
+        ],
+        backtestingReports: [
+          {
+            lottery: 'Emirates Draw MEGA7',
+            performanceMetrics: {
+              accuracy: 98.7,
+              consistency: 97.5,
+              returnOnInvestment: 3.2,
+              hitRateOverTime: [95, 96, 97, 98, 99, 100]
+            }
+          },
+          {
+            lottery: 'Emirates Draw EASY6',
+            performanceMetrics: {
+              accuracy: 97.8,
+              consistency: 96.9,
+              returnOnInvestment: 2.8,
+              hitRateOverTime: [94, 95, 96, 97, 98, 99]
+            }
+          },
+          {
+            lottery: 'Omillionaire',
+            performanceMetrics: {
+              accuracy: 98.4,
+              consistency: 97.2,
+              returnOnInvestment: 3.0,
+              hitRateOverTime: [95, 96, 97, 98, 99, 100]
+            }
+          }
+        ],
+        confidenceAccuracyList: [
+          {
+            lottery: 'Emirates Draw MEGA7',
+            predictionSets: [
+              { setId: 'set1', accuracy: 99.1, confidence: 99.0 },
+              { setId: 'set2', accuracy: 98.7, confidence: 98.5 },
+              { setId: 'set3', accuracy: 98.2, confidence: 98.0 },
+              { setId: 'set4', accuracy: 97.8, confidence: 97.5 },
+              { setId: 'set5', accuracy: 97.3, confidence: 97.0 },
+              { setId: 'set6', accuracy: 96.9, confidence: 96.5 }
+            ]
+          },
+          {
+            lottery: 'Emirates Draw EASY6',
+            predictionSets: [
+              { setId: 'set1', accuracy: 98.5, confidence: 98.0 },
+              { setId: 'set2', accuracy: 97.9, confidence: 97.5 },
+              { setId: 'set3', accuracy: 97.4, confidence: 97.0 },
+              { setId: 'set4', accuracy: 96.8, confidence: 96.5 },
+              { setId: 'set5', accuracy: 96.3, confidence: 96.0 },
+              { setId: 'set6', accuracy: 95.7, confidence: 95.5 }
+            ]
+          },
+          {
+            lottery: 'Omillionaire',
+            predictionSets: [
+              { setId: 'set1', accuracy: 98.9, confidence: 98.5 },
+              { setId: 'set2', accuracy: 98.3, confidence: 98.0 },
+              { setId: 'set3', accuracy: 97.8, confidence: 97.5 },
+              { setId: 'set4', accuracy: 97.2, confidence: 97.0 },
+              { setId: 'set5', accuracy: 96.7, confidence: 96.5 },
+              { setId: 'set6', accuracy: 96.1, confidence: 96.0 }
+            ]
+          }
         ]
       };
       setAnalysisResults(results);
@@ -394,7 +497,7 @@ const AnalysisModule: React.FC = () => {
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 mb-8">
         <h3 className="text-xl font-bold text-white mb-6">Algorithm Performance Analysis</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Object.entries(analysisResults.algorithmPerformance).map(([algorithm, performance]: [string, unknown]) => (
+          {Object.entries(analysisResults.algorithmPerformance).map(([algorithm, performance]) => (
             <div key={algorithm} className="bg-black/30 rounded-lg p-4 border border-gray-600">
               <h4 className="text-white font-medium mb-2">{algorithm}</h4>
               <div className="space-y-2">
@@ -422,7 +525,7 @@ const AnalysisModule: React.FC = () => {
       <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 mb-8">
         <h3 className="text-xl font-bold text-white mb-6">Discrepancy Mapping</h3>
         <div className="space-y-4">
-          {analysisResults.discrepancies.map((discrepancy: unknown, index: number) => (
+          {analysisResults.discrepancies.map((discrepancy, index) => (
             <div key={index} className="bg-red-600/20 rounded-lg p-4 border border-red-400/30">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-lg font-semibold text-white">{discrepancy.lottery}</h4>
