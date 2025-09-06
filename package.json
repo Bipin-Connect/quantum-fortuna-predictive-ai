@@ -51,9 +51,13 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "vite": "^4.5.2"
 =======
     "vite": "^7.1.4"
 >>>>>>> 6f6ecf5 (chore: upgrade Vite to 7.1.4 and update dependencies)
+=======
+    "vite": "^7.1.4"
+>>>>>>> upgrade-vite
   }
 }
