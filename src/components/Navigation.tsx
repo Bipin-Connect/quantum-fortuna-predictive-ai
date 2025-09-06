@@ -1,7 +1,7 @@
 import React from 'react';
-import { Zap, Target, BarChart3, Clock, Brain, Shield, User } from 'lucide-react';
+import { Zap, Target, BarChart3, Clock, Brain, Shield, User, AlertTriangle } from 'lucide-react';
 
-type ActiveModule = 'welcome' | 'intake' | 'predictions' | 'schedule' | 'insights' | 'trust' | 'portal' | 'analysis';
+type ActiveModule = 'welcome' | 'intake' | 'predictions' | 'schedule' | 'insights' | 'trust' | 'portal' | 'analysis' | 'september6';
 
 interface NavigationProps {
   activeModule: ActiveModule;
@@ -10,6 +10,7 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ activeModule, setActiveModule }) => {
   const navItems = [
+    { id: 'september6' as const, label: 'Sep 6 Report', icon: AlertTriangle },
     { id: 'welcome' as const, label: 'Welcome', icon: Zap },
     { id: 'intake' as const, label: 'Intake', icon: Target },
     { id: 'predictions' as const, label: 'Predictions', icon: Brain },
@@ -33,14 +34,16 @@ const Navigation: React.FC<NavigationProps> = ({ activeModule, setActiveModule }
               <button
                 key={id}
                 onClick={() => setActiveModule(id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
                   activeModule === id
-                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
+                    ? id === 'september6' 
+                      ? 'bg-red-600 text-white shadow-lg shadow-red-600/25'
+                      : 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
               >
-                <Icon size={18} />
-                <span className="hidden sm:inline">{label}</span>
+                <Icon size={16} />
+                <span className="hidden sm:inline text-sm">{label}</span>
               </button>
             ))}
           </div>

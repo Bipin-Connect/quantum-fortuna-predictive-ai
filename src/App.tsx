@@ -9,6 +9,7 @@ import InsightsModule from './components/InsightsModule';
 import TrustModule from './components/TrustModule';
 import UserPortal from './components/UserPortal';
 import AnalysisModule from './components/AnalysisModule';
+import September6Dashboard from './components/September6Dashboard';
 
 type ActiveModule =
   | 'welcome'
@@ -18,10 +19,11 @@ type ActiveModule =
   | 'insights'
   | 'trust'
   | 'portal'
-  | 'analysis';
+  | 'analysis'
+  | 'september6';
 
 function App() {
-  const [activeModule, setActiveModule] = useState<ActiveModule>('welcome');
+  const [activeModule, setActiveModule] = useState<ActiveModule>('september6');
   const [selectedLotteries, setSelectedLotteries] = useState<string[]>([
     'emirates_mega7',
     'emirates_easy6',
@@ -74,6 +76,7 @@ function App() {
             {activeModule === 'trust' && <TrustModule />}
             {activeModule === 'portal' && <UserPortal />}
             {activeModule === 'analysis' && <AnalysisModule />}
+            {activeModule === 'september6' && <September6Dashboard />}
           </main>
         </div>
       </div>
