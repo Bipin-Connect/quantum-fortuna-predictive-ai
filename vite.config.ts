@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
 
@@ -20,9 +19,10 @@ export default defineConfig({
   },
 
   build: {
-    outDir: 'dist',
+    outDir: 'docs', // ✅ GitHub Pages expects this folder
     assetsDir: 'assets',
     sourcemap: false,
+    emptyOutDir: true,
     rollupOptions: {
       input: path.resolve(__dirname, 'index.html'),
       output: {
@@ -48,3 +48,4 @@ export default defineConfig({
     host: true,
   },
 });
+
