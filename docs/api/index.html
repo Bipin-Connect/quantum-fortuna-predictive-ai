@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Fortuna™ API Reference</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1e40af;
+            border-bottom: 2px solid #1e40af;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2563eb;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #3b82f6;
+        }
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer {
+            background-color: #f8fafc;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .method {
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .method h3 {
+            margin-top: 0;
+        }
+        .params {
+            margin-left: 20px;
+        }
+        .param-name {
+            font-weight: bold;
+        }
+        .nav {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="../">← Back to Documentation Home</a>
+    </div>
+
+    <h1>Quantum Fortuna™ API Reference</h1>
+    
+    <div class="disclaimer">
+        <strong>Educational Disclaimer:</strong> This project is for educational purposes only. It demonstrates the limitations of predictive models and quantum-inspired algorithms in lottery prediction. No real predictive capabilities are claimed or implied.
+    </div>
+
+    <h2>Module: quantum_fortuna.rng</h2>
+    <p>
+        This module provides quantum-inspired random number generation functionality.
+    </p>
+
+    <div class="method">
+        <h3>generate_quantum_random(count=6, maximum=49)</h3>
+        <p>Generates quantum-inspired random numbers.</p>
+        <div class="params">
+            <p><span class="param-name">count</span>: Number of random numbers to generate (default: 6)</p>
+            <p><span class="param-name">maximum</span>: Maximum value for the random numbers (default: 49)</p>
+            <p><span class="param-name">returns</span>: List of random integers</p>
+        </div>
+        <pre><code>from quantum_fortuna import rng
+
+# Generate 6 random numbers between 1 and 49
+numbers = rng.generate_quantum_random(count=6, maximum=49)
+print(numbers)  # Example output: [23, 7, 42, 15, 31, 9]</code></pre>
+    </div>
+
+    <h2>Module: quantum_fortuna.modeling</h2>
+    <p>
+        This module provides predictive modeling functionality.
+    </p>
+
+    <div class="method">
+        <h3>class RandomBaselineModel</h3>
+        <p>A baseline model that generates random predictions.</p>
+        
+        <h4>Methods:</h4>
+        <div class="method">
+            <h3>train(historical_data)</h3>
+            <p>Trains the model on historical lottery data.</p>
+            <div class="params">
+                <p><span class="param-name">historical_data</span>: DataFrame containing historical lottery draws</p>
+            </div>
+        </div>
+        
+        <div class="method">
+            <h3>predict(count=6, maximum=49)</h3>
+            <p>Generates predictions for the next lottery draw.</p>
+            <div class="params">
+                <p><span class="param-name">count</span>: Number of numbers to predict (default: 6)</p>
+                <p><span class="param-name">maximum</span>: Maximum value for the predictions (default: 49)</p>
+                <p><span class="param-name">returns</span>: List of predicted integers</p>
+            </div>
+        </div>
+        
+        <pre><code>from quantum_fortuna import modeling
+import pandas as pd
+
+# Load historical data
+historical_data = pd.read_csv("data/lottery_history.csv")
+
+# Create and train model
+model = modeling.RandomBaselineModel()
+model.train(historical_data)
+
+# Generate predictions
+predictions = model.predict()
+print(predictions)  # Example output: [12, 24, 36, 5, 42, 18]</code></pre>
+    </div>
+
+    <h2>Module: quantum_fortuna.pipeline</h2>
+    <p>
+        This module provides data processing pipeline functionality.
+    </p>
+
+    <div class="method">
+        <h3>process_historical_data(file_path)</h3>
+        <p>Processes historical lottery data from a CSV file.</p>
+        <div class="params">
+            <p><span class="param-name">file_path</span>: Path to the CSV file containing historical lottery draws</p>
+            <p><span class="param-name">returns</span>: Processed DataFrame</p>
+        </div>
+        <pre><code>from quantum_fortuna import pipeline
+
+# Process historical data
+processed_data = pipeline.process_historical_data("data/lottery_history.csv")
+print(processed_data.head())</code></pre>
+    </div>
+
+    <footer style="margin-top: 50px; border-top: 1px solid #ddd; padding-top: 20px; font-size: 0.9em;">
+        <p>© 2023 Quantum Fortuna™ - Educational Project</p>
+    </footer>
+</body>
+</html>
