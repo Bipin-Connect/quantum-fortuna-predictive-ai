@@ -2,73 +2,33 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  contents: write  # needed to push to gh-pages and update files
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          fetch-depth: 0  # fetch full history so we can tag and update history
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint check
-        run: npm run lint
-
-      - name: Run tests
-        run: npm test --if-present
-
-      - name: Build project
-        run: npm run build
-
-      - name: Add SPA fallback (404.html)
-        run: cp dist/index.html dist/404.html
-
+          path: './docs'
       - name: Deploy to GitHub Pages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Switch to gh-pages branch (create if missing)
-          git fetch origin gh-pages || true
-          git checkout gh-pages || git checkout --orphan gh-pages
-
-          # Remove old files
-          git rm -rf . || true
-
-          # Copy new build
-          cp -r ../dist/* .
-
-          # Commit deploy
-          COMMIT_SHA=$(git rev-parse --short $GITHUB_SHA)
-          git add .
-          git commit -m "deploy: $COMMIT_SHA" || echo "No changes to commit"
-
-          # Push to gh-pages
-          git push origin gh-pages --force
-
-          # Tag the gh-pages commit
-          DEPLOY_TAG="deploy-$(date +'%Y-%m-%d')"
-          git tag $DEPLOY_TAG
-          git push origin $DEPLOY_TAG
-
-          # Update DEPLOY_HISTORY.md on main
-          git checkout main
-          echo "- $(date +'%Y-%m-%d') → $DEPLOY_TAG → $COMMIT_SHA (main) → $(git rev-parse --short gh-pages)" >> DEPLOY_HISTORY.md
-          git add DEPLOY_HISTORY.md
-          git commit -m "docs: update DEPLOY_HISTORY.md for $DEPLOY_TAG"
-          git push origin main
+        id: deployment
+        uses: actions/deploy-pages@v1

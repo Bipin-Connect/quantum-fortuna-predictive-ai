@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Fortuna: Educational Project on Lottery Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+        }
+        .math {
+            font-style: italic;
+        }
+        .disclaimer {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .nav {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="#overview">Overview</a>
+        <a href="#installation">Installation</a>
+        <a href="#usage">Usage</a>
+        <a href="#educational">Educational Value</a>
+        <a href="#math">Mathematical Background</a>
+    </div>
+
+    <h1>Quantum Fortuna: Educational Project on Lottery Prediction</h1>
+    
+    <div class="disclaimer">
+        <strong>Important Disclaimer:</strong> This is an educational project designed to demonstrate why lottery prediction is fundamentally impossible. It is NOT a tool for predicting actual lottery outcomes.
+    </div>
+
+    <h2 id="overview">Project Overview</h2>
+    <p>Quantum Fortuna is an educational project that uses rigorous statistical analysis and machine learning techniques to demonstrate the impossibility of predicting lottery outcomes. The project includes:</p>
+    <ul>
+        <li>A quantum-inspired random number generator</li>
+        <li>Statistical analysis tools</li>
+        <li>Machine learning models that attempt (and fail) to predict lottery numbers</li>
+        <li>Educational materials explaining the mathematical principles</li>
+    </ul>
+
+    <h2 id="installation">Installation</h2>
+    <p>To install Quantum Fortuna:</p>
+    <pre><code>git clone https://github.com/Bipin-Connect/quantum-fortuna-predictive-ai.git
+cd quantum-fortuna-predictive-ai
+pip install -e .</code></pre>
+
+    <h2 id="usage">Usage</h2>
+    <p>Run the main CLI tool:</p>
+    <pre><code>python -m quantum_fortuna --help</code></pre>
+    <p>Generate random numbers:</p>
+    <pre><code>python -m quantum_fortuna generate --count 7 --max 49</code></pre>
+    <p>Run the prediction model (which will demonstrate its failure):</p>
+    <pre><code>python -m quantum_fortuna predict --historical-data path/to/data.csv</code></pre>
+
+    <h2 id="educational">Educational Value</h2>
+    <p>This project serves as an educational tool to help people understand:</p>
+    <ul>
+        <li>The nature of randomness and probability</li>
+        <li>Why lottery prediction is mathematically impossible</li>
+        <li>How to critically evaluate claims about prediction systems</li>
+        <li>Basic concepts in statistics and machine learning</li>
+    </ul>
+
+    <h2 id="math">Mathematical Background</h2>
+    <p>Lottery draws are designed to be truly random events. This means:</p>
+    <ol>
+        <li><strong>Independence</strong>: Each draw is completely independent of all previous draws.</li>
+        <li><strong>Uniform Distribution</strong>: Each number has an equal probability of being drawn.</li>
+        <li><strong>No Patterns</strong>: There are no exploitable patterns in the sequence of draws.</li>
+    </ol>
+    <p>The probability of correctly predicting all numbers in a lottery draw is extremely small. For example, in a 7/49 lottery (choosing 7 numbers from 1-49), the probability is:</p>
+    <p class="math">P = 1/C(49,7) = 1/85,900,584 ≈ 0.00000001</p>
+    <p>This means that even with the most sophisticated prediction algorithm, your chances of winning are effectively the same as random selection.</p>
+
+    <h2>Repository</h2>
+    <p>Visit our <a href="https://github.com/Bipin-Connect/quantum-fortuna-predictive-ai">GitHub repository</a> to explore the code and learn more about this educational project.</p>
+
+    <footer style="margin-top: 50px; border-top: 1px solid #ddd; padding-top: 20px; font-size: 0.9em;">
+        <p>© 2023 Quantum Fortuna Project. This is an educational project only.</p>
+    </footer>
+</body>
+</html>
