@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ErrorBoundary from './components/ErrorBoundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import Navigation from './components/Navigation';
 import WelcomeModule from './components/WelcomeModule';
 import IntakeModule from './components/IntakeModule';
@@ -10,6 +10,7 @@ import TrustModule from './components/TrustModule';
 import UserPortal from './components/UserPortal';
 import AnalysisModule from './components/AnalysisModule';
 import September6Dashboard from './components/September6Dashboard';
+import QuantumDashboard from './components/QuantumDashboard';
 
 type ActiveModule =
   | 'welcome'
@@ -20,10 +21,11 @@ type ActiveModule =
   | 'trust'
   | 'portal'
   | 'analysis'
-  | 'september6';
+  | 'september6'
+  | 'quantum';
 
 function App() {
-  const [activeModule, setActiveModule] = useState<ActiveModule>('september6');
+  const [activeModule, setActiveModule] = useState<ActiveModule>('quantum');
   const [selectedLotteries, setSelectedLotteries] = useState<string[]>([
     'emirates_mega7',
     'emirates_easy6',
@@ -47,38 +49,54 @@ function App() {
   ]);
 
   return (
-    <ErrorBoundary>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
-        {/* Background Effects */}
-        <div
-          className={`fixed inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40`}
-        ></div>
-
-        <div className="relative z-10">
-          <Navigation
-            activeModule={activeModule}
-            setActiveModule={setActiveModule}
-          />
-
-          <main className="container mx-auto px-4 py-8">
-            {activeModule === 'welcome' && <WelcomeModule />}
-            {activeModule === 'intake' && (
-              <IntakeModule
-                selectedLotteries={selectedLotteries}
-                setSelectedLotteries={setSelectedLotteries}
-              />
-            )}
-            {activeModule === 'predictions' && (
-              <PredictionsModule selectedLotteries={selectedLotteries} />
-            )}
-            {activeModule === 'schedule' && <ScheduleModule />}
-            {activeModule === 'insights' && <InsightsModule />}
-            {activeModule === 'trust' && <TrustModule />}
-            {activeModule === 'portal' && <UserPortal />}
-            {activeModule === 'analysis' && <AnalysisModule />}
-            {activeModule === 'september6' && <September6Dashboard />}
-          </main>
-        </div>
+    <ErrorBoundary fallback={<div className="min-h-screen bg-gray-950 text-white p-8">
+      <h1 className="text-2xl font-bold text-red-400 mb-4">Something went wrong</h1>
+      <p className="text-gray-300">The application encountered an error. Please refresh the page or contact support.</p>
+    </div>}>
+      <div className="min-h-screen bg-gray-950 text-white">
+        {/* Background effects */}
+        <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/20 via-gray-950 to-gray-950 pointer-events-none"></div>
+        <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
+        
+        {/* Navigation */}
+        <Navigation activeModule={activeModule} setActiveModule={setActiveModule} />
+        
+        {/* Main content */}
+        <main className="relative pt-16 pb-24">
+          {activeModule === 'welcome' && <WelcomeModule />}
+          {activeModule === 'intake' && (
+            <IntakeModule
+              selectedLotteries={selectedLotteries}
+              setSelectedLotteries={setSelectedLotteries}
+            />
+          )}
+          {activeModule === 'predictions' && (
+            <PredictionsModule selectedLotteries={selectedLotteries} />
+          )}
+          {activeModule === 'schedule' && <ScheduleModule />}
+          {activeModule === 'insights' && <InsightsModule />}
+          {activeModule === 'trust' && <TrustModule />}
+          {activeModule === 'portal' && <UserPortal />}
+          {activeModule === 'analysis' && <AnalysisModule />}
+          {activeModule === 'september6' && <September6Dashboard />}
+          {activeModule === 'quantum' && <QuantumDashboard selectedLotteries={selectedLotteries} />}
+        </main>
+        
+        {/* Footer */}
+        <footer className="relative border-t border-gray-800 py-6">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="text-gray-400 text-sm mb-4 md:mb-0">
+                Quantum-Fortuna AI Dashboard © {new Date().getFullYear()} | Educational Purpose Only
+              </div>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-purple-400 text-sm">Documentation</a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 text-sm">GitHub</a>
+                <a href="#" className="text-gray-400 hover:text-purple-400 text-sm">About</a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </ErrorBoundary>
   );
