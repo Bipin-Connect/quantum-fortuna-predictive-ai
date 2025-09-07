@@ -1,174 +1,230 @@
-# Quantum Fortuna™
+# Quantum Fortuna: Educational Project on Lottery Prediction
 
-**Revolutionary Quantum Neural Network Predictions**
+⚠️ **This is an educational project, not a prediction tool.**
 
-Quantum Fortuna™ v5.3 is a breakthrough web application that leverages consortium intelligence, quantum neural networks, and multi-dimensional pattern analysis to deliver unprecedented predictive insights for global lotteries. Built with React, TypeScript, Tailwind CSS, and Chart.js, featuring a cutting-edge UI with comprehensive prediction modules, real-time analysis, and AR/VR spatial intelligence.
+## Project Overview
 
-## 🎯 Features
+Quantum Fortuna is an educational project designed to demonstrate why lottery prediction is fundamentally impossible. The project uses rigorous statistical analysis and machine learning techniques to show that no algorithm, regardless of complexity, can predict lottery outcomes better than random chance.
 
-- **Consortium Intelligence**: Advanced AI personas (Logician, Strategist, Chaos Theorist, Archivist) with Nexus synthesis
-- **Perfect Streak**: 35 consecutive perfect predictions targeting September 1, 2025
-- **Multi-Set Predictions**: 6 validated prediction sets per lottery with confidence metrics
-- **Backtesting Reports**: Comprehensive performance metrics for all predictions
-- **Confidence Accuracy**: Detailed percentage accuracy lists for all predictions
-- **Draw Schedule Registry**: Complete registry for each lottery's draw schedule
-- **Analytics & Insights**: Interactive dashboards with advanced visualizations
-- **System Audit**: Confirmation of system integrity with unnecessary features removed
-- **Trust & Security**: SHA-256 verification with real-time audit trails
-- **Mobile-First**: Progressive Web App with responsive design
+## Why This Approach Fails
 
-## 🛠️ Setup Instructions
+Lottery draws are designed to be truly random events. This means:
 
-### Prerequisites
-- Node.js 18+ (for development)
-- Modern web browser
+1. **Independence**: Each draw is completely independent of all previous draws.
+2. **Uniform Distribution**: Each number has an equal probability of being drawn.
+3. **No Patterns**: There are no exploitable patterns in the sequence of draws.
 
-### Node.js Installation
-1. Install Node Version Manager (nvm):
+Attempts to predict lottery numbers using historical data, market trends, or any other inputs are fundamentally flawed because they assume some form of pattern or correlation where none exists.
+
+### Mathematical Proof
+
+The probability of correctly predicting all numbers in a lottery draw is extremely small. For example, in a 7/49 lottery (choosing 7 numbers from 1-49), the probability is:
+
+$P = \frac{1}{\binom{49}{7}} = \frac{1}{85,900,584} \approx 0.00000001$
+
+This means that even with the most sophisticated prediction algorithm, your chances of winning are effectively the same as random selection.
+
+### Demonstration
+
+This project includes a Jupyter notebook (`notebooks/01_demonstrating_failure.ipynb`) that visually demonstrates:
+
+- The uniform distribution of lottery numbers
+- Lack of autocorrelation between consecutive draws
+- Machine learning models performing no better than random chance
+- Statistical tests confirming the randomness of lottery draws
+
+## Installation
+
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-```
-
-2. Load nvm and install Node.js 18:
-```bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm install 18
-nvm use 18
-```
-
-3. Verify installation:
-```bash
-node -v  # Should show v18.x.x
-npm -v   # Should show npm version
-```
-
-### Project Setup
-1. Clone the repository:
-```bash
-git clone https://github.com/future-tech-vision/quantum-fortuna-predictive-ai.git
+# Clone the repository
+git clone https://github.com/yourusername/quantum-fortuna-predictive-ai.git
 cd quantum-fortuna-predictive-ai
+
+# Install the package and dependencies
+pip install -e .
+
+# For development dependencies
+pip install -e ".[dev]"
 ```
 
-2. Install dependencies:
+Alternatively, you can use the provided Makefile:
+
 ```bash
-npm install
+make install  # Basic installation
+make dev      # Installation with development dependencies
 ```
 
-3. Start development server:
+## Repository Update Guide
+
+If you're updating from the old version of this repository, follow these steps:
+
+1. **Cleanup**: Remove the old files
+   ```bash
+   git rm main.py utils.py
+   ```
+
+2. **Commit**: Commit the new project structure
+   ```bash
+   git add .
+   git commit -m "Refactor: Transform project into educational tool"
+   ```
+
+3. **Push**: Push the changes to the main branch
+   ```bash
+   git push origin main
+   ```
+
+4. **Deploy**: Configure GitHub Pages
+   - Go to the repository **Settings**
+   - Navigate to **Pages**
+   - Set the source to **Deploy from a branch**
+   - Select the **main** branch and **/docs** folder
+   - Click **Save**
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This project is for educational purposes only. It demonstrates why lottery prediction is impossible and should not be used as a tool for gambling or making financial decisions.
+
+## Installation
+
 ```bash
-npm run dev
+# Clone the repository
+git clone https://github.com/yourusername/quantum-fortuna-predictive-ai.git
+cd quantum-fortuna-predictive-ai
+
+# Install the package and dependencies
+pip install -e .
+
+# For development dependencies
+pip install -e ".[dev]"
 ```
 
-4. Open your browser to `http://localhost:5173`
+Alternatively, you can use the provided Makefile:
+
+```bash
+make install  # Basic installation
+make dev      # Installation with development dependencies
+```
+
+## Usage
+
+### Command-Line Interface
+
+The project provides a command-line interface for generating lottery numbers and evaluating prediction models:
+
+```bash
+# Generate random lottery numbers
+quantum-fortuna generate-numbers --lottery mega7 --draws 5
+
+# Evaluate prediction model against random baseline
+quantum-fortuna evaluate-model --lottery mega7 --test-size 0.2
+```
+
+Or directly using the module:
+
+```bash
+python -m src.cli generate-numbers --lottery mega7 --draws 5
+```
+
+### Available Commands
+
+#### `generate-numbers`
+
+Generates random lottery numbers using a quantum-inspired random number generator.
+
+```
+Options:
+  --lottery LOTTERY    Lottery type (mega7, easy6, fast5, powerball, euromillions, omillionaire)
+  --draws DRAWS        Number of draws to generate (default: 1)
+  --quantum QUANTUM    Use quantum-inspired RNG if available (default: True)
+```
+
+#### `evaluate-model`
+
+Evaluates the performance of prediction models against a random baseline.
+
+```
+Options:
+  --lottery LOTTERY    Lottery type (mega7, easy6, fast5, powerball, euromillions, omillionaire)
+  --test-size TEST_SIZE  Proportion of data to use for testing (default: 0.2)
+  --lookback LOOKBACK  Number of previous draws to use for prediction (default: 5)
+```
+
+### Jupyter Notebook
+
+To run the demonstration notebook:
+
+```bash
+jupyter notebook notebooks/01_demonstrating_failure.ipynb
+```
+
+Or using the Makefile:
+
+```bash
+make notebook
+```
+
+## Project Structure
+
+```
+quantum-fortuna-predictive-ai/
+├── src/
+│   ├── cli.py           # Command-line interface
+│   ├── modeling.py      # Prediction models
+│   ├── pipeline.py      # Data processing
+│   └── rng.py           # Random number generation
+├── tests/
+│   ├── test_rng.py      # Tests for RNG module
+│   └── test_pipeline.py # Tests for pipeline module
+├── notebooks/
+│   └── 01_demonstrating_failure.ipynb  # Demonstration notebook
+├── docs/
+│   └── index.md         # Documentation
+├── .github/workflows/
+│   └── ci.yml           # Continuous Integration
+├── LICENSE              # License file
+├── Makefile             # Automation tasks
+├── pyproject.toml       # Project configuration
+└── README.md            # This file
+```
+
+## Development
 
 ### Running Tests
-The project uses Jest and React Testing Library for testing:
 
 ```bash
-# Run tests once
-npm test
-
-# Run tests in watch mode during development
-npm run test:watch
-
-# Generate test coverage report
-npm run test:coverage
+pytest tests/
 ```
 
-## 🚀 Deployment
+Or using the Makefile:
 
-**Live Application**: https://bipin-connect.github.io/quantum-fortuna-predictive-ai/
-
-### Automated CI/CD Pipeline
-The application uses GitHub Pages exclusively for deployment via GitHub Actions:
-- **Trigger**: Automatic deployment on every push to main branch
-- **Process**: Build, test, lint, and deploy to GitHub Pages
-- **Audit**: Complete deployment history with SHA tags in DEPLOY_HISTORY.md
-- **Monitoring**: Real-time build status and deployment verification
-
-### Build for Production
 ```bash
-npm run build
+make test
 ```
 
-### GitHub Pages Deployment
-The application automatically deploys to GitHub Pages via GitHub Actions when changes are pushed to the main branch. For more details, see the [DEPLOYMENT.md](./DEPLOYMENT.md) file.
+### Code Formatting and Linting
 
-## 📊 Usage
+```bash
+# Format code
+black src/ tests/
+isort src/ tests/
 
-Navigate through the modules using the top navigation:
-- **Welcome**: System overview and performance dashboard
-- **Intake**: Select lotteries for analysis
-- **Predictions**: View quantum AI-generated predictions with 6 validated sets per lottery
-- **Schedule**: Real-time countdown timers with complete draw schedule registry
-- **Insights**: Advanced data pattern analysis with visualization dashboards
-- **Analysis**: Comprehensive backtesting reports with performance metrics
-- **Trust**: System integrity verification with SHA-256 hashing
-- **Portal**: Data export, webhook integration, and user settings
+# Lint code
+flake8 src/ tests/
+mypy src/ tests/
+```
 
-## 🧪 Technology Stack
+Or using the Makefile:
 
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Charts**: Chart.js with react-chartjs-2
-- **Icons**: Lucide React
-- **Build Tool**: Vite
-- **Testing**: Jest, React Testing Library
-- **Deployment**: GitHub Pages with GitHub Actions
-- **AI Models**: Quantum Neural Networks v5.2+
-- **PWA**: Progressive Web App with offline capabilities
-
-## 📜 License
-
-Apache License 2.0 - see LICENSE file for details
-
-## 🔮 Future Enhancements
-
-- AR/VR spatial intelligence integration (September 1, 2025)
-- Three.js 3D number visualization
-- WebXR immersive prediction interface
-- Real-time global lottery API integration
-- Advanced quantum algorithm v6.0 development (Q4 2025)
-
----
-
-**Current Version**: v5.3.0
-**Target Date**: September 1, 2025 - Consortium Intelligence & Multi-Set Predictions
-
-## 🎲 Supported Lotteries (99.1% Average Accuracy)
-
-Quantum Fortuna™ v5.3.0 provides consortium intelligence predictions for global lotteries with unprecedented accuracy:
-
-### Emirates Draw Collection
-- **Emirates Draw MEGA7** - Weekly draws (99.3% confidence, 5 prediction sets)
-- **Emirates Draw EASY6** - Bi-weekly regional lottery (98.1% confidence, 5 prediction sets)
-- **Emirates Draw FAST5** - Daily quick-pick lottery (96.8% confidence, 5 prediction sets)
-
-### International Premium Lotteries
-- **Omillionaire** - Oman's premium lottery (98.7% confidence, 5 prediction sets)
-- **EuroMillions** - European lottery with Lucky Stars (97.9% confidence, 5 prediction sets)
-- **Powerball USA** - Multi-state lottery (96.5% confidence, 5 prediction sets)
-
-### Free Lottery Platforms
-- **Lotto India** - Daily draws with cultural optimization (98.1% confidence, 5 prediction sets)
-- **Lottery.co.uk Free** - UK free lottery platform (95.8% confidence, 5 prediction sets)
-- **UK Free Lottery Weekly** - Weekly UK free draws (96.4% confidence, 5 prediction sets)
-
-### Prediction Features
-- **Consortium Intelligence**: 4 AI personas + Nexus synthesis for comprehensive analysis
-- **Multi-Set Strategy**: 6 validated prediction sets per lottery with different risk profiles
-- **Perfect Predictions**: 35 consecutive perfect matches targeting September 1, 2025
-- **Confidence Accuracy Lists**: Detailed percentage accuracy for all predictions
-- **Backtesting Reports**: Complete performance metrics for historical validation
-- **Draw Schedule Registry**: Comprehensive registry for all lottery draw schedules
-- **Analytics & Insights Dashboards**: Interactive visualizations with performance metrics
-- **System Audit Confirmation**: Streamlined system with unnecessary features removed
-
-## 🌟 September 1, 2025 Target Achievements
-
-- **Consortium Intelligence v6.0**: Advanced AI persona collaboration system
-- **Multi-Set Predictions**: 6 validated strategic options per lottery with confidence metrics
-- **Cultural Algorithm Enhancement**: Region-specific optimization for global lotteries
-- **Strategic Value Analysis**: Anti-crowd psychology for prize maximization
-- **Perfect Prediction Streak**: Targeting 36th consecutive perfect prediction
+```bash
+make format
+make lint
+```
