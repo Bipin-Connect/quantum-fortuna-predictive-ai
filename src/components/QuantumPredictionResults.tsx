@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { AlertCircle, Clock, TrendingUp, BarChart3 } from 'lucide-react';
+import { AlertCircle, Clock, BarChart3 } from 'lucide-react';
 import { PredictionResult } from '../types';
 
 interface QuantumPredictionResultsProps {

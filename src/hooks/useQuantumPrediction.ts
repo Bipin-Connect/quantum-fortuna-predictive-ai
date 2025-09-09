@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from 'react';
 import { QuantumPredictionEngine, QuantumPredictionResult } from '../data/quantumPredictionEngine';
-import { LotteryType, PredictionResult, QuantumKernelParams } from '../types';
+import { LotteryType, QuantumKernelParams } from '../types';
 import { apiService } from '../services/apiService';
 
 interface UseQuantumPredictionProps {
@@ -24,7 +24,7 @@ interface QuantumParameters {
 /**
  * Custom hook for managing quantum prediction state and API interactions
  */
-export const useQuantumPrediction = (props?: UseQuantumPredictionProps) => {
+export const useQuantumPrediction = () => {
   const [predictions, setPredictions] = useState<Record<string, QuantumPredictionResult>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,36 +39,40 @@ export const useQuantumPrediction = (props?: UseQuantumPredictionProps) => {
   const predictionEngine = new QuantumPredictionEngine();
 
   /**
-   * Fetch predictions for a specific lottery type
-   */
-  const fetchPredictions = useCallback(async (lotteryType: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const today = new Date();
-      const targetDate = today.toISOString().split('T')[0];
-      
-      // Apply custom parameters if they exist
-      if (parameters) {
-        predictionEngine.setParameters(parameters);
-      }
-      
-      // Generate prediction
-      const result = predictionEngine.generatePrediction(lotteryType, targetDate);
-      
-      // Update predictions state
-      setPredictions(prev => ({
-        ...prev,
-        [lotteryType]: result
-      }));
-      
-    } catch (err) {
-      setError(`Failed to generate prediction: ${err instanceof Error ? err.message : String(err)}`);
-    } finally {
-      setLoading(false);
+ * Fetch predictions for a specific lottery type
+ */
+const fetchPredictions = useCallback(async (lotteryType: LotteryType) => {
+  try {
+    setLoading(true);
+    setError(null);
+    
+    const today = new Date();
+    const targetDate = today.toISOString().split('T')[0];
+    
+    // Apply custom parameters if they exist
+    if (parameters) {
+      predictionEngine.setParameters(parameters);
     }
-  }, [parameters]);
+    
+    // Generate prediction
+    const result = predictionEngine.generatePrediction(lotteryType, targetDate);
+    
+    // Update predictions state
+    setPredictions(prev => ({
+      ...prev,
+      [lotteryType]: result
+    }));
+    
+    // In a real implementation, we would also fetch historical data
+    // and update the data pipeline status
+    console.log(`Fetched prediction for ${lotteryType} at ${new Date().toISOString()}`);
+    
+  } catch (err) {
+    setError(`Failed to generate prediction: ${err instanceof Error ? err.message : String(err)}`);
+  } finally {
+    setLoading(false);
+  }
+}, [parameters]);
   
   /**
    * Submit custom parameters for the quantum engine

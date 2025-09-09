@@ -97,7 +97,7 @@ const ExplainabilityModule: React.FC<ExplainabilityModuleProps> = ({ lotteryType
     },
   };
 
-  const handleFeatureClick = (event: any, elements: any) => {
+  const handleFeatureClick = (_event: any, elements: any) => {
     if (elements.length > 0) {
       const index = elements[0].index;
       setSelectedFeature(featureImportance[index]);
@@ -123,7 +123,10 @@ const ExplainabilityModule: React.FC<ExplainabilityModuleProps> = ({ lotteryType
               <Bar 
                 data={chartData} 
                 options={chartOptions} 
-                onClick={handleFeatureClick}
+                onClick={(event) => {
+                  const elements = (event as unknown as {chart: ChartJS}).chart.getActiveElements();
+                  handleFeatureClick(event, elements);
+                }}
               />
             </div>
           )}
@@ -281,6 +284,144 @@ function getMockFeatureImportance(lotteryType: LotteryType): FeatureImportance[]
           importance: 0.11,
           direction: 'negative',
           description: 'Numbers corresponding to calendar dates (1-31). These numbers are often overselected by players but show no advantage in actual draws.'
+        },
+      ];
+    
+    case 'us_powerball':
+      return [
+        {
+          featureName: 'Powerball Selection',
+          importance: 0.35,
+          direction: 'positive',
+          description: 'The special Powerball number selection strategy. Certain Powerball numbers show slight statistical variations in historical data.'
+        },
+        {
+          featureName: 'Main Number Distribution',
+          importance: 0.28,
+          direction: 'neutral',
+          description: 'How the five main numbers are distributed across the 1-69 range. Broader distribution patterns align with mathematical probability.'
+        },
+        {
+          featureName: 'Hot/Cold Numbers',
+          importance: 0.22,
+          direction: 'positive',
+          description: 'Analysis of frequently drawn (hot) versus rarely drawn (cold) numbers. The model shows slight correlation with hot numbers, though this is likely statistical variance.'
+        },
+        {
+          featureName: 'Number Sum Range',
+          importance: 0.19,
+          direction: 'neutral',
+          description: 'The total sum of the five main numbers. Certain sum ranges appear more frequently due to mathematical probability.'
+        },
+        {
+          featureName: 'Powerball Parity',
+          importance: 0.16,
+          direction: 'negative',
+          description: 'Whether the Powerball is odd or even. Historical data shows slight variations that are likely coincidental.'
+        },
+        {
+          featureName: 'Previous Winners Pattern',
+          importance: 0.12,
+          direction: 'negative',
+          description: 'Similarity to previous jackpot-winning combinations. The model shows these patterns are less likely to repeat immediately.'
+        },
+        {
+          featureName: 'Number Grouping',
+          importance: 0.09,
+          direction: 'neutral',
+          description: 'How numbers cluster or spread across the possible range. Certain grouping patterns appear in historical data with varying frequencies.'
+        },
+      ];
+      
+    case 'euro_millions':
+      return [
+        {
+          featureName: 'Star Number Selection',
+          importance: 0.33,
+          direction: 'positive',
+          description: 'The selection strategy for the two special star numbers. Certain combinations of star numbers show slight statistical variations.'
+        },
+        {
+          featureName: 'Main Number Coverage',
+          importance: 0.27,
+          direction: 'neutral',
+          description: 'How well the five main numbers cover the 1-50 range. Broader coverage correlates with mathematical probability.'
+        },
+        {
+          featureName: 'Star Number Patterns',
+          importance: 0.23,
+          direction: 'positive',
+          description: 'Patterns in the selection of star numbers. Certain combinations appear more frequently in historical data.'
+        },
+        {
+          featureName: 'Regional Popularity',
+          importance: 0.18,
+          direction: 'negative',
+          description: 'Numbers commonly selected by players in different European regions. Popular selections show slightly lower expected value due to shared jackpots.'
+        },
+        {
+          featureName: 'Draw Day Variation',
+          importance: 0.15,
+          direction: 'neutral',
+          description: 'Statistical differences between Tuesday and Friday draws. The model identifies slight variations that are likely coincidental.'
+        },
+        {
+          featureName: 'Historical Jackpot Patterns',
+          importance: 0.11,
+          direction: 'negative',
+          description: 'Patterns from previous jackpot-winning combinations. The model shows these are unlikely to repeat in the short term.'
+        },
+        {
+          featureName: 'Number Sum Distribution',
+          importance: 0.08,
+          direction: 'neutral',
+          description: 'The distribution of the sum of all selected numbers. Most combinations fall within a predictable range based on mathematical probability.'
+        },
+      ];
+      
+    case 'india_lotto':
+      return [
+        {
+          featureName: 'Regional Number Preference',
+          importance: 0.31,
+          direction: 'positive',
+          description: 'Numbers that are culturally significant or considered lucky in different regions of India. These show slight statistical variations in historical data.'
+        },
+        {
+          featureName: 'Number Balance',
+          importance: 0.26,
+          direction: 'neutral',
+          description: 'Balance between low (1-25) and high (26-49) numbers. More balanced selections align with mathematical probability.'
+        },
+        {
+          featureName: 'Numerical Patterns',
+          importance: 0.22,
+          direction: 'positive',
+          description: 'Recurring patterns in historical draws. The model identifies certain patterns, though these have no predictive value for future draws.'
+        },
+        {
+          featureName: 'Draw Frequency Analysis',
+          importance: 0.17,
+          direction: 'neutral',
+          description: 'Analysis of how frequently each number appears across all historical draws. Some numbers show slight statistical variations.'
+        },
+        {
+          featureName: 'Sequential Selection',
+          importance: 0.14,
+          direction: 'negative',
+          description: 'The presence of sequential numbers in a selection. These appear less frequently in historical data, though this is purely coincidental.'
+        },
+        {
+          featureName: 'Sum Total Range',
+          importance: 0.11,
+          direction: 'neutral',
+          description: 'The sum of all selected numbers. Certain sum ranges appear more frequently due to mathematical probability.'
+        },
+        {
+          featureName: 'Previous Draw Influence',
+          importance: 0.08,
+          direction: 'negative',
+          description: 'Influence of previous draw results on current selection. The model shows minimal correlation between consecutive draws.'
         },
       ];
       

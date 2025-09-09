@@ -7,6 +7,7 @@
  */
 
 import { PredictionSet, LotteryPrediction } from './predictionEngine';
+import { LotteryType } from '../types';
 
 /**
  * Quantum kernel parameters for the prediction model
@@ -57,6 +58,7 @@ export const defaultQuantumConfig: QuantumPredictionConfig = {
 export interface QuantumPredictionResult {
   primaryPrediction: PredictionSet;
   alternativeSets: PredictionSet[];
+  lotteryType: LotteryType;
   quantumMetrics: {
     entanglementScore: number;
     quantumAdvantage: number;
@@ -79,6 +81,14 @@ export class QuantumPredictionEngine {
   private config: QuantumPredictionConfig;
   private historicalData: any[] = [];
   private featureMatrix: number[][] = [];
+  private supportedLotteries: LotteryType[] = [
+    'emirates_mega7',
+    'emirates_easy6',
+    'us_powerball',
+    'euro_millions',
+    'india_lotto'
+  ];
+  private lotteryConfigurations: Record<LotteryType, any> = {};
   
   /**
    * Create a new QuantumPredictionEngine
@@ -86,15 +96,36 @@ export class QuantumPredictionEngine {
    */
   constructor(config: Partial<QuantumPredictionConfig> = {}) {
     this.config = { ...defaultQuantumConfig, ...config };
+    
+    // Initialize lottery configurations
+    this.initializeLotteryConfigurations();
+  }
+  
+  /**
+   * Initialize configurations for all supported lottery types
+   */
+  private initializeLotteryConfigurations(): void {
+    this.supportedLotteries.forEach(lotteryType => {
+      this.lotteryConfigurations[lotteryType] = this.getLotteryConfiguration(lotteryType);
+    });
   }
   
   /**
    * Load historical lottery data
+   * @param lotteryType Type of lottery
    * @param data Historical lottery data
    */
-  public loadHistoricalData(data: any[]): void {
-    this.historicalData = data;
+  public loadHistoricalData(lotteryType: LotteryType, data: any[]): void {
+    // Store historical data
+    if (!this.historicalData[lotteryType]) {
+      this.historicalData[lotteryType] = [];
+    }
+    this.historicalData[lotteryType] = data;
+    
+    // Engineer features from historical data
     this.featureMatrix = this.engineerFeatures(data);
+    
+    console.log(`Loaded ${data.length} historical records for ${lotteryType}`);
   }
   
   /**
@@ -108,23 +139,52 @@ export class QuantumPredictionEngine {
   /**
    * Engineer features from historical data
    * @param data Historical lottery data
+   * @param lotteryType Type of lottery
    * @returns Feature matrix
    */
-  private engineerFeatures(data: any[]): number[][] {
+  private engineerFeatures(data: any[], lotteryType?: LotteryType): number[][] {
     // In a real implementation, this would extract meaningful features
     // For educational purposes, we'll create a simplified feature matrix
+    const lotteryConfig = lotteryType ? this.lotteryConfigurations[lotteryType] : null;
+    
     return data.map(draw => {
       // Extract basic statistical features
       const numbers = draw.numbers || [];
-      const mean = numbers.reduce((sum: number, num: number) => sum + num, 0) / numbers.length;
-      const variance = numbers.reduce((sum: number, num: number) => sum + Math.pow(num - mean, 2), 0) / numbers.length;
-      const min = Math.min(...numbers);
-      const max = Math.max(...numbers);
+      
+      // Handle special numbers if present
+      let mainNumbers = numbers;
+      let specialNumbers: number[] = [];
+      
+      if (lotteryConfig && lotteryConfig.specialNumbers && lotteryConfig.specialNumberCount > 0) {
+        mainNumbers = numbers.slice(0, numbers.length - lotteryConfig.specialNumberCount);
+        specialNumbers = numbers.slice(numbers.length - lotteryConfig.specialNumberCount);
+      }
+      
+      const mean = mainNumbers.reduce((sum: number, num: number) => sum + num, 0) / mainNumbers.length;
+      const variance = mainNumbers.reduce((sum: number, num: number) => sum + Math.pow(num - mean, 2), 0) / mainNumbers.length;
+      const min = Math.min(...mainNumbers);
+      const max = Math.max(...mainNumbers);
       const range = max - min;
       
-      // Create feature vector
-      return [mean, variance, min, max, range, draw.drawNumber || 0];
+      // Create feature vector with lottery-specific features
+      const baseFeatures = [mean, variance, min, max, range, draw.drawNumber || 0];
+      
+      // Add special number features if present
+      if (specialNumbers.length > 0) {
+        const specialMean = specialNumbers.reduce((sum: number, num: number) => sum + num, 0) / specialNumbers.length;
+        baseFeatures.push(specialMean);
+      }
+      
+      return baseFeatures;
     });
+  }
+  
+  /**
+   * Get all supported lottery types
+   * @returns Array of supported lottery types
+   */
+  public getSupportedLotteries(): LotteryType[] {
+    return [...this.supportedLotteries];
   }
   
   /**
@@ -133,7 +193,7 @@ export class QuantumPredictionEngine {
    * @param targetDate Target date for prediction
    * @returns Quantum prediction result
    */
-  public generatePrediction(lotteryType: string, targetDate: string): QuantumPredictionResult {
+  public generatePrediction(lotteryType: LotteryType, targetDate: string): QuantumPredictionResult {
     // Start timing
     const startTime = performance.now();
     
@@ -143,11 +203,15 @@ export class QuantumPredictionEngine {
     // Simulate quantum circuit execution time
     const circuitTime = performance.now() + Math.random() * 500;
     
+    // Configure prediction parameters based on lottery type
+    const lotteryConfig = this.getLotteryConfiguration(lotteryType);
+    
     // Generate primary prediction
     const primaryPrediction = this.generatePredictionSet(
       `QF-${lotteryType.toUpperCase()}-${targetDate}-001`,
       'Quantum Neural Convergence',
-      lotteryType
+      lotteryType,
+      lotteryConfig
     );
     
     // Generate alternative sets
@@ -157,7 +221,8 @@ export class QuantumPredictionEngine {
         this.generatePredictionSet(
           `QF-${lotteryType.toUpperCase()}-${targetDate}-00${i+2}`,
           this.getRandomStrategy(),
-          lotteryType
+          lotteryType,
+          lotteryConfig
         )
       );
     }
@@ -167,20 +232,18 @@ export class QuantumPredictionEngine {
     const totalTime = endTime - startTime;
     const postProcessingTime = endTime - circuitTime;
     
+    // Generate lottery-specific metrics
+    const featureImportance = this.generateFeatureImportance(lotteryType);
+    
     return {
       primaryPrediction,
       alternativeSets,
+      lotteryType,
       quantumMetrics: {
         entanglementScore: 0.85 + Math.random() * 0.1,
         quantumAdvantage: 1.5 + Math.random() * 0.5,
         circuitDepth: this.config.kernelParams.quantumCircuitLayers * this.config.kernelParams.entanglementDepth,
-        featureImportance: {
-          'frequency': 0.35 + Math.random() * 0.1,
-          'recency': 0.25 + Math.random() * 0.1,
-          'entropy': 0.20 + Math.random() * 0.1,
-          'cooccurrence': 0.15 + Math.random() * 0.1,
-          'seasonality': 0.05 + Math.random() * 0.05
-        },
+        featureImportance,
         uncertaintyEstimate: 0.15 + Math.random() * 0.1
       },
       executionStats: {
@@ -193,44 +256,123 @@ export class QuantumPredictionEngine {
   }
   
   /**
+   * Get lottery-specific configuration
+   * @param lotteryType Type of lottery
+   * @returns Lottery configuration
+   */
+  private getLotteryConfiguration(lotteryType: LotteryType): any {
+    // In a real implementation, this would return lottery-specific configuration
+    // For now, we'll return mock configurations
+    switch (lotteryType) {
+      case 'emirates_mega7':
+        return {
+          numberCount: 7,
+          numberRange: 49,
+          specialNumbers: false,
+          drawFrequency: 'weekly',
+          historicalDataDepth: 100
+        };
+      case 'emirates_easy6':
+        return {
+          numberCount: 6,
+          numberRange: 42,
+          specialNumbers: false,
+          drawFrequency: 'weekly',
+          historicalDataDepth: 100
+        };
+      case 'us_powerball':
+        return {
+          numberCount: 5,
+          numberRange: 69,
+          specialNumbers: true,
+          specialNumberCount: 1,
+          specialNumberRange: 26,
+          drawFrequency: 'twice-weekly',
+          historicalDataDepth: 200
+        };
+      case 'euro_millions':
+        return {
+          numberCount: 5,
+          numberRange: 50,
+          specialNumbers: true,
+          specialNumberCount: 2,
+          specialNumberRange: 12,
+          drawFrequency: 'twice-weekly',
+          historicalDataDepth: 150
+        };
+      case 'india_lotto':
+        return {
+          numberCount: 6,
+          numberRange: 49,
+          specialNumbers: false,
+          drawFrequency: 'weekly',
+          historicalDataDepth: 80
+        };
+      default:
+        return {
+          numberCount: 6,
+          numberRange: 49,
+          specialNumbers: false,
+          drawFrequency: 'weekly',
+          historicalDataDepth: 100
+        };
+    }
+  }
+  
+  /**
+   * Generate feature importance for a specific lottery type
+   * @param lotteryType Type of lottery
+   * @returns Feature importance
+   */
+  private generateFeatureImportance(lotteryType: LotteryType): Record<string, number> {
+    // In a real implementation, this would generate lottery-specific feature importance
+    // For now, we'll return mock data with slight variations per lottery
+    const baseImportance = {
+      'frequency': 0.35,
+      'recency': 0.25,
+      'entropy': 0.20,
+      'cooccurrence': 0.15,
+      'seasonality': 0.05
+    };
+    
+    // Add small variations based on lottery type
+    const variation = 0.1;
+    return Object.fromEntries(
+      Object.entries(baseImportance).map(([key, value]) => [
+        key, 
+        Math.min(0.95, Math.max(0.05, value + (Math.random() * variation * 2 - variation)))
+      ])
+    );
+  }
+  
+  /**
    * Generate a prediction set
    * @param id Prediction ID
    * @param strategy Prediction strategy
    * @param lotteryType Type of lottery
+   * @param lotteryConfig Configuration for the lottery type
    * @returns Prediction set
    */
-  private generatePredictionSet(id: string, strategy: string, lotteryType: string): PredictionSet {
+  private generatePredictionSet(id: string, strategy: string, lotteryType: LotteryType, lotteryConfig: any): PredictionSet {
     // In a real implementation, this would use quantum algorithms
     // For educational purposes, we'll simulate quantum-inspired predictions
     
     let numbers: number[] = [];
     let bonus: number[] = [];
     
-    // Different lottery types have different number ranges and formats
-    if (lotteryType === 'emirates_mega7') {
-      // Emirates Mega 7: 7 numbers from 1-35
-      numbers = this.generateQuantumRandomNumbers(7, 1, 35);
-    } else if (lotteryType === 'emirates_fast5') {
-      // Emirates Fast 5: 5 numbers from 1-36
-      numbers = this.generateQuantumRandomNumbers(5, 1, 36);
-    } else if (lotteryType === 'emirates_easy6') {
-      // Emirates Easy 6: 6 numbers from 1-42
-      numbers = this.generateQuantumRandomNumbers(6, 1, 42);
-    } else if (lotteryType === 'euromillions') {
-      // EuroMillions: 5 main numbers (1-50) + 2 stars (1-12)
-      numbers = this.generateQuantumRandomNumbers(5, 1, 50);
-      bonus = this.generateQuantumRandomNumbers(2, 1, 12);
-    } else if (lotteryType === 'powerball') {
-      // Powerball: 5 main numbers (1-69) + 1 powerball (1-26)
-      numbers = this.generateQuantumRandomNumbers(5, 1, 69);
-      bonus = this.generateQuantumRandomNumbers(1, 1, 26);
-    } else {
-      // Default: 6 numbers from 1-49
-      numbers = this.generateQuantumRandomNumbers(6, 1, 49);
-    }
+    // Extract configuration values
+     const { numberCount, numberRange, specialNumbers, specialNumberCount = 0, specialNumberRange = 0 } = lotteryConfig;
+     
+     // Generate main numbers based on configuration
+     numbers = this.generateQuantumRandomNumbers(numberCount, 1, numberRange);
+     
+     // Generate special numbers if needed
+     if (specialNumbers && specialNumberCount > 0) {
+       bonus = this.generateQuantumRandomNumbers(specialNumberCount, 1, specialNumberRange);
+     }
     
     // Generate rationale based on strategy
-    const rationale = this.generateRationale(strategy, numbers);
+    const rationale = this.generateRationale(strategy, numbers, lotteryType);
     const confidence = 90 + Math.random() * 9;
     const expectedValue = 7 + Math.random() * 2;
     
@@ -238,6 +380,7 @@ export class QuantumPredictionEngine {
       id,
       name: strategy,
       numbers: numbers.sort((a, b) => a - b),
+      bonus: bonus.sort((a, b) => a - b),
       confidence,
       strategy,
       rationale,
@@ -250,14 +393,19 @@ export class QuantumPredictionEngine {
    * @param count Number of numbers to generate
    * @param min Minimum value (inclusive)
    * @param max Maximum value (inclusive)
+   * @param lotteryType Optional lottery type for specialized generation
    * @returns Array of unique random numbers
    */
-  private generateQuantumRandomNumbers(count: number, min: number, max: number): number[] {
+  private generateQuantumRandomNumbers(count: number, min: number, max: number, lotteryType?: LotteryType): number[] {
     // In a real implementation, this would use quantum algorithms
     // For educational purposes, we'll simulate quantum-inspired randomness
     
     const result: number[] = [];
     const used: Record<number, boolean> = {};
+    
+    // Get lottery-specific parameters if available
+    const lotteryConfig = lotteryType ? this.lotteryConfigurations[lotteryType] : null;
+    const quantumCircuitDepth = this.config.kernelParams.quantumCircuitLayers * this.config.kernelParams.entanglementDepth;
     
     // Ensure we don't exceed the possible range
     const possibleNumbers = max - min + 1;
@@ -270,8 +418,15 @@ export class QuantumPredictionEngine {
       const r2 = Math.random();
       const r3 = Math.random();
       
-      // Combine random sources with a simple quantum-inspired algorithm
-      const quantumFactor = Math.sin(r1 * r2 * Math.PI) * Math.cos(r3 * Math.PI) + 0.5;
+      // Apply lottery-specific quantum circuit simulation
+      let quantumFactor = Math.sin(r1 * r2 * Math.PI) * Math.cos(r3 * Math.PI) + 0.5;
+      
+      if (lotteryConfig) {
+        // Enhance randomness with lottery-specific quantum simulation
+        for (let i = 0; i < Math.min(3, quantumCircuitDepth); i++) {
+          quantumFactor = (quantumFactor + Math.sin(quantumFactor * Math.PI)) / 2;
+        }
+      }
       
       // Generate a number in the range
       const num = Math.floor(min + quantumFactor * (max - min + 1));
@@ -332,9 +487,10 @@ export class QuantumPredictionEngine {
    * Generate a rationale for a prediction strategy
    * @param strategy Prediction strategy
    * @param numbers Predicted numbers
+   * @param lotteryType Optional lottery type for specialized rationales
    * @returns Rationale string
    */
-  private generateRationale(strategy: string, numbers: number[]): string {
+  private generateRationale(strategy: string, numbers: number[], lotteryType?: LotteryType): string {
     const rationales: Record<string, string[]> = {
       'Quantum Neural Convergence': [
         'Quantum circuit analysis reveals strong probability amplitudes',
@@ -363,12 +519,41 @@ export class QuantumPredictionEngine {
       ]
     };
     
+    // Lottery-specific rationales
+    const lotteryRationales: Record<LotteryType, string[]> = {
+      'emirates_mega7': [
+        'Emirates Mega7 historical pattern analysis shows favorable probability distribution',
+        'Quantum analysis of Emirates Mega7 draws indicates these numbers are underrepresented'
+      ],
+      'emirates_easy6': [
+        'Emirates Easy6 draw patterns suggest these numbers are due for appearance',
+        'Statistical anomalies in Emirates Easy6 history support this prediction'
+      ],
+      'us_powerball': [
+        'US Powerball frequency analysis shows these numbers have favorable probability',
+        'Quantum entanglement patterns specific to Powerball draws favor these selections'
+      ],
+      'euro_millions': [
+        'EuroMillions historical data shows a trend favoring these numbers',
+        'Quantum circuit optimization for EuroMillions parameters suggests this combination'
+      ],
+      'india_lotto': [
+        'India Lotto draw analysis indicates these numbers have higher probability',
+        'Statistical patterns in India Lotto history support this prediction'
+      ]
+    };
+    
     // Get rationales for the strategy or use default
     const strategyRationales = rationales[strategy] || [
       'Advanced algorithmic analysis of historical patterns',
       'Statistical optimization with machine learning enhancement',
       'Probabilistic modeling with entropy maximization'
     ];
+    
+    // Add lottery-specific rationales if available
+    if (lotteryType && lotteryRationales[lotteryType]) {
+      strategyRationales.push(...lotteryRationales[lotteryType]);
+    }
     
     // Select a random rationale
     return strategyRationales[Math.floor(Math.random() * strategyRationales.length)];

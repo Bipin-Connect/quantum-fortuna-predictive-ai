@@ -1,7 +1,7 @@
 import React from 'react';
 import { Zap, Target, BarChart3, Clock, Brain, Shield, User, AlertTriangle } from 'lucide-react';
 
-type ActiveModule = 'welcome' | 'intake' | 'predictions' | 'schedule' | 'insights' | 'trust' | 'portal' | 'analysis' | 'september6' | 'quantum';
+type ActiveModule = 'welcome' | 'intake' | 'predictions' | 'schedule' | 'insights' | 'trust' | 'portal' | 'analysis' | 'september6';
 
 interface NavigationProps {
   activeModule: ActiveModule;
@@ -10,7 +10,6 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ activeModule, setActiveModule }) => {
   const navItems = [
-    { id: 'quantum' as const, label: 'Quantum AI', icon: Zap },
     { id: 'september6' as const, label: 'Sep 6 Report', icon: AlertTriangle },
     { id: 'welcome' as const, label: 'Welcome', icon: Zap },
     { id: 'intake' as const, label: 'Intake', icon: Target },
@@ -39,9 +38,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeModule, setActiveModule }
                   activeModule === id
                     ? id === 'september6' 
                       ? 'bg-red-600 text-white shadow-lg shadow-red-600/25'
-                      : id === 'quantum'
-                        ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/25'
-                        : 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
+                      : 'bg-blue-600 text-white shadow-lg shadow-blue-600/25'
                     : 'text-gray-300 hover:text-white hover:bg-white/10'
                 }`}
               >
