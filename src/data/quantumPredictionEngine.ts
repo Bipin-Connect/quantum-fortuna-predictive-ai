@@ -440,13 +440,13 @@ export class QuantumPredictionEngine {
     
     return result;
   }
-    
-    // Strategy and rationale methods are implemented below
-  }
   
   /**
    * Get lottery parameters based on lottery type
    * @param lotteryType Type of lottery
+   * @returns Lottery parameters
+   */
+   */
   private getLotteryParameters(lotteryType: string): { minNumber: number, maxNumber: number, count: number } {
     switch (lotteryType.toLowerCase()) {
       case 'emirates_mega7':
@@ -645,4 +645,5 @@ export class QuantumPredictionEngine {
     if (confidence > 95) return 'balanced';
     return 'aggressive';
   }
+}
 }

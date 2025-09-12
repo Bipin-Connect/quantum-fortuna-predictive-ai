@@ -67,6 +67,9 @@ const WelcomeModule: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-lg rounded-lg p-3 border border-blue-400/30 inline-block">
+          <span className="text-blue-400 font-semibold">📊 TODAY'S REPORT: {new Date().toLocaleDateString()} - Multi-Lottery Intelligence Active</span>
+        </div>
       </div>
     </div>
   );
